@@ -1817,7 +1817,7 @@ module Mail
     def without_attachments!
       return self unless has_attachments?
 
-      parts.delete_if { |p| p.attachment? }
+      parts.delete_attachments
       body_raw = if parts.empty?
                    ''
                  else

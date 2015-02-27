@@ -1814,20 +1814,27 @@ describe Mail::Message do
 
   describe "without_attachments!" do
     it "should delete all attachments" do
-      emails_with_attachments = ['content_disposition', 'content_location',
-                                 'pdf', 'with_encoded_name', 'with_quoted_filename']
+      emails_with_attachments = [
+        'attachment_emails/attachment_content_disposition',
+        'attachment_emails/attachment_content_location',
+        'attachment_emails/attachment_pdf',
+        'attachment_emails/attachment_with_encoded_name',
+        'attachment_emails/attachment_with_quoted_filename',
+        'mime_emails/raw_email7']
 
-      emails_with_attachments.each { |email|
-        mail = Mail.read(fixture(File.join('emails', 'attachment_emails', "attachment_#{email}.eml")))
+      emails_with_attachments.each { |file_name|
+        mail = Mail.read(fixture(File.join('emails', "#{file_name}.eml")))
+        #puts mail.parts.inspect_structure
         attachments_count = mail.attachments.size
         mail_length_with_attachments = mail.to_s.length
-        parts_count_with_attachments = mail.parts.size
+        parts_count_with_attachments = mail.parts.recursive_size
         expect(mail.has_attachments?).to be_truthy
+
         mail.without_attachments!
 
         mail_length_without_attachments = mail.to_s.length
         expect(mail_length_without_attachments).to be < mail_length_with_attachments
-        expect(mail.parts).to_not be_empty unless parts_count_with_attachments == attachments_count
+        expect(mail.parts.recursive_size).to eq parts_count_with_attachments - attachments_count
         expect(mail.has_attachments?).to be_falsey
       }
     end

@@ -1,5 +1,6 @@
 == HEAD
 
+* #858 - Change Message#without_attachments! to delete attachments recursively (Tyler Rick)
 * Make the gem compatible with Rubinius (Robin Dupret)
 * #808 - Mail::Field correctly responds_to? the methods of its instantiated field (thegcat)
 * #772 - normalize encoding matchers (grosser)
