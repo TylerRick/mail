@@ -1819,12 +1819,15 @@ describe Mail::Message do
 
       emails_with_attachments.each { |email|
         mail = Mail.read(fixture(File.join('emails', 'attachment_emails', "attachment_#{email}.eml")))
+        attachments_count = mail.attachments.size
         mail_length_with_attachments = mail.to_s.length
+        parts_count_with_attachments = mail.parts.size
         expect(mail.has_attachments?).to be_truthy
         mail.without_attachments!
 
         mail_length_without_attachments = mail.to_s.length
         expect(mail_length_without_attachments).to be < mail_length_with_attachments
+        expect(mail.parts).to_not be_empty unless parts_count_with_attachments == attachments_count
         expect(mail.has_attachments?).to be_falsey
       }
     end
