@@ -1816,6 +1816,7 @@ module Mail
                  end
 
       @body = Mail::Body.new(body_raw)
+      separate_parts if @separate_parts
 
       self
     end

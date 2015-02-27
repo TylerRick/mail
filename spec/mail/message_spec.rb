@@ -1651,12 +1651,15 @@ describe Mail::Message do
 
       emails_with_attachments.each { |email|
         mail = Mail.read(fixture(File.join('emails', 'attachment_emails', "attachment_#{email}.eml")))
+        attachments_count = mail.attachments.size
         mail_length_with_attachments = mail.to_s.length
+        parts_count_with_attachments = mail.parts.size
         mail.has_attachments?.should be_true
         mail.without_attachments!
 
         mail_length_without_attachments = mail.to_s.length
         mail_length_without_attachments.should be < mail_length_with_attachments
+        mail.parts.should_not be_empty unless parts_count_with_attachments == attachments_count
         mail.has_attachments?.should be_false
       }
     end
