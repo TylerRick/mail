@@ -1492,6 +1492,10 @@ describe Mail::Message do
       expect(@message.text?).to eq true
     end
 
+    it "inspect_structure should return what is expected" do
+      expect(@message.inspect_structure).to eq @message.inspect
+    end
+
   end
 
   describe "helper methods" do
@@ -1824,7 +1828,7 @@ describe Mail::Message do
 
       emails_with_attachments.each { |file_name|
         mail = Mail.read(fixture(File.join('emails', "#{file_name}.eml")))
-        #puts mail.parts.inspect_structure
+        #puts mail.inspect_structure
         attachments_count = mail.attachments.size
         mail_length_with_attachments = mail.to_s.length
         parts_count_with_attachments = mail.parts.recursive_size
